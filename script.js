@@ -38,7 +38,20 @@ async function loadProducts() {
   allProducts = data.products;
   return allProducts;
 }
+/* Open the product details modal */
+function showProductDetails(productId) {
+  const product = allProducts.find(
+    (item) => item.id === productId
+  );
 
+  if (!product) return;
+
+  modalProductName.textContent = product.name;
+  modalProductBrand.textContent = product.brand;
+  modalProductDescription.textContent = product.description;
+
+  productDetailsModal.showModal();
+}
 /* Create HTML for displaying interactive product cards */
 function displayProducts(products) {
   productsContainer.innerHTML = products
