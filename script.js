@@ -94,10 +94,15 @@ function toggleProduct(productId) {
 /* Listen for clicks on product cards */
 productsContainer.addEventListener("click", (event) => {
   const card = event.target.closest(".product-card");
+  
 
   if (!card) return;
 
   const productId = Number(card.dataset.id);
+  if (event.target.closest(".product-info")) {
+  showProductDetails(productId);
+  return;
+}
 
   toggleProduct(productId);
   updateSelectedProducts();
