@@ -67,6 +67,23 @@ function toggleProduct(productId) {
   }
 }
 
+/* Listen for clicks on product cards */
+productsContainer.addEventListener("click", (event) => {
+  const card = event.target.closest(".product-card");
+
+  if (!card) return;
+
+  const productId = Number(card.dataset.id);
+
+  toggleProduct(productId);
+
+  // Update the clicked card's appearance and accessibility state
+  const isSelected = selectedProductIds.includes(productId);
+
+  card.classList.toggle("selected", isSelected);
+  card.setAttribute("aria-pressed", String(isSelected));
+});
+
 /* Filter and display products when category changes */
 categoryFilter.addEventListener("change", (e) => {
   const selectedCategory = e.target.value;
