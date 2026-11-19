@@ -52,6 +52,11 @@ function showProductDetails(productId) {
 
   productDetailsModal.showModal();
 }
+/* Close the product details modal */
+closeProductModal.addEventListener("click", () => {
+  productDetailsModal.close();
+});
+
 /* Create HTML for displaying interactive product cards */
 function displayProducts(products) {
   productsContainer.innerHTML = products
