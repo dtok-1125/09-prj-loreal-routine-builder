@@ -292,3 +292,11 @@ body {
   outline: 2px solid #ff003b;
   outline-offset: 3px;
 }
+
+/* Highlight selected product cards */
+
+.product-card.selected {
+  border: 2px solid #e3a535;
+  background-color: #fffaf0;
+  box-shadow: 0 0 0 3px rgba(227, 165, 53, 0.15);
+}
