@@ -253,3 +253,42 @@ body {
 .generate-btn i {
   margin-right: 8px;
 }
+
+/* Selected product collection */
+
+#selectedProductsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.selected-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 16px;
+  background: #f8f5f0;
+  border: 1px solid #e8e0d3;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.remove-product {
+  border: none;
+  background: transparent;
+  color: #9a1730;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.remove-product:hover {
+  text-decoration: underline;
+}
+
+.remove-product:focus-visible {
+  outline: 2px solid #ff003b;
+  outline-offset: 3px;
+}
