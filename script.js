@@ -33,21 +33,38 @@ async function loadProducts() {
   return allProducts;
 }
 
-/* Create HTML for displaying product cards */
+/* Create HTML for displaying interactive product cards */
 function displayProducts(products) {
   productsContainer.innerHTML = products
-    .map(
-      (product) => `
-    <div class="product-card">
-      <img src="${product.image}" alt="${product.name}">
-      <div class="product-info">
-        <h3>${product.name}</h3>
-        <p>${product.brand}</p>
-      </div>
-    </div>
-  `
-    )
+    .map((product) => {
+      const isSelected = selectedProductIds.includes(product.id);
+
+      return `
+        <button
+          type="button"
+          class="product-card ${isSelected ? "selected" : ""}"
+          data-id="${product.id}"
+          aria-pressed="${isSelected}"
+        >
+          <img src="${product.image}" alt="">
+          <div class="product-info">
+            <h3>${product.name}</h3>
+            <p>${product.brand}</p>
+          </div>
+        </button>
+      `;
+    })
     .join("");
+}
+/* Add or remove a product from our selection */
+function toggleProduct(productId) {
+  if (selectedProductIds.includes(productId)) {
+    selectedProductIds = selectedProductIds.filter(
+      (id) => id !== productId
+    );
+  } else {
+    selectedProductIds.push(productId);
+  }
 }
 
 /* Filter and display products when category changes */
