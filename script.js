@@ -84,6 +84,58 @@ productsContainer.addEventListener("click", (event) => {
   card.setAttribute("aria-pressed", String(isSelected));
 });
 
+/* Display the user's selected beauty products */
+function updateSelectedProducts() {
+  selectedProductsList.innerHTML = "";
+
+  if (selectedProductIds.length === 0) {
+    selectedProductsList.textContent =
+      "Your beauty collection starts here. Select a product to begin!";
+    return;
+  }
+
+  selectedProductIds.forEach((id) => {
+    const product = allProducts.find(
+      (item) => item.id === id
+    );
+
+    if (!product) return;
+
+    const item = document.createElement("div");
+    item.className = "selected-item";
+
+    const name = document.createElement("span");
+    name.textContent = `${product.brand} — ${product.name}`;
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "remove-product";
+    removeButton.textContent = "Remove";
+    removeButton.setAttribute(
+      "aria-label",
+      `Remove ${product.name}`
+    );
+
+    removeButton.addEventListener("click", () => {
+      toggleProduct(id);
+      updateSelectedProducts();
+
+      // Keep the product grid's selection state in sync
+      const card = productsContainer.querySelector(
+        `.product-card[data-id="${id}"]`
+      );
+
+      if (card) {
+        card.classList.remove("selected");
+        card.setAttribute("aria-pressed", "false");
+      }
+    });
+
+    item.append(name, removeButton);
+    selectedProductsList.appendChild(item);
+  });
+}
+
 /* Filter and display products when category changes */
 categoryFilter.addEventListener("change", (e) => {
   const selectedCategory = e.target.value;
