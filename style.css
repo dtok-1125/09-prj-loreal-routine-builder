@@ -8,10 +8,12 @@
 /* —— body + fonts —— */
 body {
   font-family: "Montserrat", Arial, Helvetica, sans-serif;
-  color: #333;
+  background-color: #111111;
+  color: #ffffff;
   display: flex;
   justify-content: center;
 }
+
 
 .page-wrapper {
   width: 90%;
@@ -299,4 +301,56 @@ body {
   border: 2px solid #e3a535;
   background-color: #fffaf0;
   box-shadow: 0 0 0 3px rgba(227, 165, 53, 0.15);
+}
+
+/* Product details modal */
+.product-modal {
+  width: min(90%, 500px);
+  max-height: 80vh;
+  margin: auto;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.product-modal::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* Elegant modal interior */
+.product-modal .modal-content {
+  position: relative;
+  padding: 36px 40px 40px;
+  background: #faf6f0;
+color: #24201e;
+border: 1px solid #e3a535;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.7;
+}
+
+.product-modal {
+  box-shadow:
+    0 0 28px rgba(227, 165, 53, 0.18),
+    0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+
+/* Elegant modal close button */
+.product-modal .modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  border: none;
+  background: transparent;
+  color: #8a6e4a;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.product-modal .modal-close:hover {
+  color: #24201e;
+  transform: rotate(90deg);
 }
