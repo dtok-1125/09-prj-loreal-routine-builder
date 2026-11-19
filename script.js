@@ -7,6 +7,12 @@ const chatWindow = document.getElementById("chatWindow");
 const selectedProductsList = document.getElementById(
   "selectedProductsList"
 );
+// Product details modal elements
+const productDetailsModal = document.getElementById("productDetailsModal");
+const closeProductModal = document.getElementById("closeProductModal");
+const modalProductName = document.getElementById("modalProductName");
+const modalProductBrand = document.getElementById("modalProductBrand");
+const modalProductDescription = document.getElementById("modalProductDescription");
 
 // Store our product catalog and selected IDs
 let allProducts = [];
