@@ -76,6 +76,7 @@ productsContainer.addEventListener("click", (event) => {
   const productId = Number(card.dataset.id);
 
   toggleProduct(productId);
+  updateSelectedProducts();
 
   // Update the clicked card's appearance and accessibility state
   const isSelected = selectedProductIds.includes(productId);
