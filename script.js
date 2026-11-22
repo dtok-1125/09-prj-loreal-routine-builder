@@ -5,6 +5,19 @@ const productSearch = document.getElementById("productSearch");
 const productsContainer = document.getElementById("productsContainer");
 const chatForm = document.getElementById("chatForm");
 const chatWindow = document.getElementById("chatWindow");
+const markdownParser =
+  typeof window.markdownit === "function"
+    ? window.markdownit({ html: false })
+    : null;
+const htmlSanitizer = window.DOMPurify;
+const canRenderMarkdown =
+  markdownParser !== null && typeof htmlSanitizer?.sanitize === "function";
+
+if (!canRenderMarkdown) {
+  console.error(
+    "Markdown display is unavailable because the Markdown parser or HTML sanitizer did not load."
+  );
+}
 
 const selectedProductsList = document.getElementById(
   "selectedProductsList"
@@ -542,9 +555,28 @@ function appendChatMessage(role, text) {
   label.className = "chat-message-label";
   label.textContent = role === "user" ? "You" : "Advisor";
 
-  const content = document.createElement("p");
+  const content = document.createElement("div");
   content.className = "chat-message-content";
-  content.textContent = text;
+  if (role === "assistant") {
+    if (!canRenderMarkdown) {
+      content.textContent = text;
+    } else {
+      const markdown = markdownParser.render(text);
+      content.innerHTML = htmlSanitizer.sanitize(markdown, {
+        USE_PROFILES: { html: true },
+      });
+
+      content.querySelectorAll("a[href]").forEach((link) => {
+        const destination = new URL(link.href, window.location.href);
+        if (destination.origin !== window.location.origin) {
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+        }
+      });
+    }
+  } else {
+    content.textContent = text;
+  }
 
   message.append(label, content);
   chatWindow.appendChild(message);
