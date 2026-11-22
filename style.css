@@ -969,3 +969,38 @@ select {
     transform: translateX(-50%);
   }
 }
+
+/* Product Search */
+.search-container {
+  margin: 20px 0 28px;
+}
+
+.search-container label {
+  display: block;
+  margin-bottom: 10px;
+  color: #f3eee6;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+#productSearch {
+  width: 100%;
+  padding: 16px 18px;
+  background: #171717;
+  color: #ffffff;
+  border: 1px solid #a87b25;
+  border-radius: 4px;
+  font: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#productSearch:focus {
+  outline: none;
+  border-color: #e3a535;
+  box-shadow: 0 0 0 3px rgba(227, 165, 53, 0.15);
+}
+
+#productSearch::placeholder {
+  color: #aaa39a;
+}

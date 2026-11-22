@@ -1,5 +1,6 @@
 /* Get references to DOM elements */
 const categoryFilter = document.getElementById("categoryFilter");
+const productSearch = document.getElementById("productSearch");
 const productsContainer = document.getElementById("productsContainer");
 const chatForm = document.getElementById("chatForm");
 const chatWindow = document.getElementById("chatWindow");
@@ -281,16 +282,31 @@ function updateSelectedProducts() {
   });
 }
 
-/* Filter and display products when category changes */
-categoryFilter.addEventListener("change", (e) => {
-  const selectedCategory = e.target.value;
+// Filter products by category AND search keyword
+function filterProducts() {
+  const selectedCategory = categoryFilter.value;
+  const searchTerm = productSearch.value.trim().toLowerCase();
 
-  const filteredProducts = allProducts.filter(
-    (product) => product.category === selectedCategory
-  );
+  const filteredProducts = allProducts.filter((product) => {
+    const matchesCategory =
+      product.category === selectedCategory;
+
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchTerm) ||
+      product.brand.toLowerCase().includes(searchTerm) ||
+      product.description.toLowerCase().includes(searchTerm);
+
+    return matchesCategory && matchesSearch;
+  });
 
   displayProducts(filteredProducts);
-});
+}
+
+// Listen for category changes
+categoryFilter.addEventListener("change", filterProducts);
+
+// Listen as the customer types
+productSearch.addEventListener("input", filterProducts);
 
 /* Use catalog names and descriptions to organize products without inventing directions. */
 function getProductRoutineDetails(product) {
