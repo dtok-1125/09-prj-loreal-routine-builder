@@ -1,5 +1,6 @@
 /* Get references to DOM elements */
-const categoryFilter = document.getElementById("categoryFilter");
+const categoryFilter = document.getElementById("categoryFilter"); 
+const directionToggle = document.getElementById("directionToggle");
 const productSearch = document.getElementById("productSearch");
 const productsContainer = document.getElementById("productsContainer");
 const chatForm = document.getElementById("chatForm");
@@ -19,6 +20,11 @@ const modalProductName = document.getElementById("modalProductName");
 const modalProductBrand = document.getElementById("modalProductBrand");
 const modalProductDescription = document.getElementById("modalProductDescription");
 const modalProductAction = document.getElementById("modalProductAction");
+
+// Switch between left-to-right and right-to-left layouts
+directionToggle.addEventListener("change", () => {
+  document.documentElement.dir = directionToggle.value;
+});
 
 // Store our product catalog and selected IDs
 let allProducts = [];
