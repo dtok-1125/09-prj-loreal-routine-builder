@@ -278,16 +278,25 @@ function updateSelectedProducts() {
     const item = document.createElement("div");
     item.className = "selected-item";
 
+    const productDetails = document.createElement("div");
+    productDetails.className = "selected-item-details";
+
+    const brand = document.createElement("span");
+    brand.className = "selected-item-brand";
+    brand.textContent = product.brand;
+
     const name = document.createElement("span");
-    name.textContent = `${product.brand} — ${product.name}`;
+    name.className = "selected-item-name";
+    name.textContent = product.name;
+    productDetails.append(brand, name);
 
     const removeButton = document.createElement("button");
     removeButton.type = "button";
     removeButton.className = "remove-product";
-    removeButton.textContent = "Remove";
+    removeButton.textContent = "×";
     removeButton.setAttribute(
       "aria-label",
-      `Remove ${product.name}`
+      `Remove ${product.brand} ${product.name}`
     );
 
     removeButton.addEventListener("click", () => {
@@ -296,7 +305,7 @@ function updateSelectedProducts() {
       syncProductCard(id);
     });
 
-    item.append(name, removeButton);
+    item.append(productDetails, removeButton);
     selectedProductsList.appendChild(item);
   });
 }

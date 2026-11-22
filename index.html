@@ -18,19 +18,16 @@
   <body>
     <div class="page-wrapper">
   
-
-    <!-- Layout Direction Control -->
-    <div class="direction-control">
-      <label for="directionToggle">Display Direction</label>
-      <select id="directionToggle" aria-label="Display direction">
-        <option value="ltr">English — Left to Right</option>
-        <option value="rtl">العربية — Right to Left</option>
-      </select>
-    </div>
-
     <!-- Header / Branding -->
     
       <header class="site-header">
+        <div class="direction-control">
+          <label for="directionToggle">Display Direction</label>
+          <select id="directionToggle" aria-label="Display direction">
+            <option value="ltr">English — Left to Right</option>
+            <option value="rtl">العربية — Right to Left</option>
+          </select>
+        </div>
         <div class="header-inner">
           <img src="img/loreal-logo.png" alt="L'Oréal" class="logo" />
           <span class="header-divider" aria-hidden="true"></span>
@@ -97,7 +94,12 @@
           Begin a New Consultation
         </button>
         <button id="generateRoutine" class="generate-btn">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Routine
+          <img
+            src="img/loreal-beauty-genius-logo.svg"
+            alt=""
+            aria-hidden="true"
+          />
+          <span>Generate My Routine</span>
         </button>
       </div>
 
@@ -137,6 +139,13 @@
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Use</a>
           <a href="#">Contact</a>
+          <a
+            href="https://www.lorealparisusa.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Explore L’Oréal Paris
+          </a>
         </nav>
       </footer>
     </div>

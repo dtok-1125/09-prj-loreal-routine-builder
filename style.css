@@ -48,14 +48,17 @@ select {
   transform: translateX(-50%);
   background: rgba(11, 11, 11, 0.96);
   border-bottom: 1px solid rgba(227, 165, 53, 0.42);
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
 }
 
 .header-inner {
+  grid-column: 2;
+  justify-self: center;
   width: min(1120px, calc(100% - 64px));
   min-height: 112px;
-  margin: 0 auto;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,7 +85,56 @@ select {
   font-weight: 500;
   line-height: 1.5;
   letter-spacing: 0.2em;
+  white-space: nowrap;
   text-transform: uppercase;
+}
+
+.direction-control {
+  position: absolute;
+  top: 50%;
+  right: max(32px, calc((100vw - 1120px) / 2));
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transform: translateY(-50%);
+}
+
+.direction-control label {
+  color: var(--color-muted);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.direction-control select {
+  min-height: 32px;
+  max-width: 180px;
+  padding: 5px 28px 5px 9px;
+  border: 1px solid rgba(227, 165, 53, 0.55);
+  border-radius: 3px;
+  appearance: none;
+  background-color: #171513;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23e3a535' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  background-size: 9px 6px;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.direction-control select:hover,
+.direction-control select:focus-visible {
+  border-color: var(--color-gold-light);
+  box-shadow: 0 0 0 2px rgba(227, 165, 53, 0.12);
+}
+
+.direction-control select:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 2px;
 }
 
 /* Give the brand header a quiet, staggered entrance without delaying page content. */
@@ -177,8 +229,7 @@ select {
 }
 
 .search-section select,
-#productSearch,
-.generate-btn:not(:disabled) {
+#productSearch {
   animation: box-glow-orbit 8s linear infinite;
 }
 
@@ -381,9 +432,10 @@ select {
 .selected-products h2,
 .chatbox h2 {
   color: #fffaf0;
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.015em;
+  line-height: 1.2;
 }
 
 .selected-products h2 {
@@ -400,41 +452,82 @@ select {
 }
 
 .selected-item {
+  flex: 0 1 280px;
   min-width: 0;
+  max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  padding: 10px 14px;
-  border: 1px solid #e8e0d3;
-  border-radius: 3px;
-  background: #f8f5f0;
-  color: #24201e;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(227, 165, 53, 0.4);
+  border-radius: 4px;
+  background: linear-gradient(135deg, #211f1b, #151412);
+  color: var(--color-text);
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.4;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
 }
 
-.selected-item span {
+.selected-item:hover {
+  border-color: rgba(240, 197, 111, 0.72);
+  box-shadow: 0 0 16px rgba(227, 165, 53, 0.12);
+  transform: translateY(-1px);
+}
+
+.selected-item-details {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.selected-item-brand {
+  color: #d3b77f;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.selected-item-name {
+  color: #fffaf0;
+  font-size: 13px;
+  font-weight: 500;
   overflow-wrap: anywhere;
 }
 
 .remove-product {
-  flex: 0 0 auto;
-  border: none;
-  background: transparent;
-  color: #9a1730;
-  font: inherit;
-  font-weight: 700;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(227, 165, 53, 0.32);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  color: #e7dfd1;
+  font-family: inherit;
+  font-size: 19px;
+  line-height: 1;
   cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 .remove-product:hover {
-  color: var(--color-pink-red);
-  text-decoration: underline;
-}
-
-.remove-product:focus-visible {
-  outline-color: var(--color-pink-red);
+  border-color: var(--color-gold-light);
+  background: rgba(227, 165, 53, 0.12);
+  color: #fffaf0;
+  box-shadow: 0 0 10px rgba(227, 165, 53, 0.14);
 }
 
 .reset-consultation-btn {
@@ -470,6 +563,10 @@ select {
 }
 
 .generate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   width: 100%;
   min-height: 56px;
   margin-top: 24px;
@@ -479,26 +576,35 @@ select {
   background: linear-gradient(110deg, #d99a2e, #f0c56f 52%, #d99a2e);
   background-size: 180% 100%;
   color: var(--color-black);
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
   cursor: pointer;
-  transition: background-position 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+  transition:
+    background-position 220ms ease,
+    box-shadow 220ms ease,
+    transform 220ms ease,
+    filter 220ms ease;
 }
 
 .generate-btn:hover {
   background-position: 100% 0;
-  box-shadow: 0 7px 22px rgba(227, 165, 53, 0.2);
-  transform: translateY(-2px);
+  box-shadow: 0 5px 16px rgba(227, 165, 53, 0.24);
+  filter: brightness(1.04);
+  transform: translateY(-1px);
 }
 
 .generate-btn:active {
   transform: translateY(0);
 }
 
-.generate-btn i {
-  margin-right: 8px;
-  color: #5b2500;
+.generate-btn img {
+  display: block;
+  width: 28px;
+  height: auto;
+  flex: none;
+  filter: drop-shadow(0 0 1px rgba(35, 25, 10, 0.7));
 }
 
 /* Chat */
@@ -531,8 +637,10 @@ select {
 .routine-heading {
   margin-bottom: 6px;
   color: #24201e;
-  font-size: 19px;
+  font-size: 25px;
   font-weight: 500;
+  letter-spacing: 0.015em;
+  line-height: 1.2;
 }
 
 .routine-intro,
@@ -867,8 +975,10 @@ select {
 .product-modal .modal-content h2 {
   padding-right: 24px;
   margin-bottom: 8px;
-  font-size: 22px;
-  line-height: 1.35;
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  line-height: 1.25;
 }
 
 .product-modal #modalProductBrand {
@@ -975,7 +1085,7 @@ select {
 
   .site-header,
   .header-inner {
-    min-height: 92px;
+    min-height: 144px;
   }
 
   .header-inner {
@@ -994,6 +1104,7 @@ select {
   .site-title {
     font-size: 10px;
     letter-spacing: 0.13em;
+    white-space: normal;
   }
 
   .products-grid {
@@ -1006,6 +1117,19 @@ select {
   }
 }
 
+@media (max-width: 1000px) {
+  .site-header,
+  .header-inner {
+    min-height: 144px;
+  }
+
+  .direction-control {
+    top: 8px;
+    right: max(20px, calc((100vw - 1120px) / 2));
+    transform: none;
+  }
+}
+
 @media (max-width: 480px) {
   .page-wrapper {
     width: calc(100% - 28px);
@@ -1013,7 +1137,7 @@ select {
 
   .site-header,
   .header-inner {
-    min-height: 80px;
+    min-height: 144px;
   }
 
   .header-inner {
@@ -1033,6 +1157,10 @@ select {
     max-width: 150px;
     font-size: 9px;
     letter-spacing: 0.1em;
+  }
+
+  .direction-control {
+    right: 14px;
   }
 
   .search-section {
@@ -1063,6 +1191,16 @@ select {
   .selected-products,
   .chatbox {
     padding: 18px;
+  }
+
+  .selected-products h2,
+  .chatbox h2 {
+    font-size: 23px;
+  }
+
+  .routine-heading,
+  .product-modal .modal-content h2 {
+    font-size: 22px;
   }
 
   .selected-item {
@@ -1191,6 +1329,15 @@ select {
   text-align: right;
 }
 
+[dir="rtl"] .direction-control select {
+  padding: 5px 9px 5px 28px;
+  background-position: left 9px center;
+}
+
+[dir="rtl"] .direction-control {
+  right: 0;
+}
+
 /* Keep L'Oréal branding centered in both directions */
 [dir="rtl"] .site-header {
   direction: ltr;
@@ -1199,7 +1346,6 @@ select {
 
 [dir="rtl"] .header-inner {
   direction: ltr;
-  margin-inline: auto;
   justify-content: center;
   text-align: center;
 }
