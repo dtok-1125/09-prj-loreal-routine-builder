@@ -500,32 +500,29 @@ async function requestAssistant(messages) {
     throw new Error(apiMessage || "The AI service returned an error.");
   }
 
-  const choice = data.choices?.[0];
-  if (choice?.finish_reason === "length") {
-    console.error("[Routine advisor] AI response reached its completion limit.", {
-      finishReason: choice.finish_reason,
-      completionTokens: data.usage?.completion_tokens ?? null,
-    });
-    throw new Error("The AI response was incomplete (finish_reason: length).");
-  }
-  if (choice?.finish_reason === "content_filter") {
-    console.error("[Routine advisor] AI response was stopped by content filtering.", {
-      finishReason: choice.finish_reason,
-    });
-    throw new Error("The AI response was not completed.");
-  }
+  // Check whether the Responses API completed successfully
+if (data.status === "incomplete") {
+  throw new Error("The AI response was incomplete. Please try again.");
+}
 
-  const reply = choice?.message?.content;
-  if (typeof reply !== "string" || !reply.trim()) {
-    console.error("[Routine advisor] AI response did not contain text.", {
-      httpStatus: response.status,
-      finishReason: choice?.finish_reason ?? null,
-      choiceCount: Array.isArray(data.choices) ? data.choices.length : null,
-    });
-    throw new Error("The AI service returned no response text.");
-  }
+// Extract text from the Responses API output
+const reply = (data.output || [])
+  .filter((item) => item.type === "message")
+  .flatMap((item) => item.content || [])
+  .filter((content) => content.type === "output_text")
+  .map((content) => content.text)
+  .join("\n\n");
 
-  return reply.trim();
+if (!reply.trim()) {
+  console.error("[Routine advisor] No response text found.", {
+    status: data.status,
+    outputTypes: data.output?.map((item) => item.type),
+  });
+
+  throw new Error("The AI service returned no response text.");
+}
+
+return reply.trim();
 }
 
 function setRequestInProgress(isInProgress) {
