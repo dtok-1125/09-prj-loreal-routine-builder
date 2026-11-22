@@ -11,6 +11,7 @@
   --color-gold: #e3a535;
   --color-gold-light: #f0c56f;
   --color-pink-red: #ff003b;
+  --color-berry: #9b2948;
   --color-text: #f7f4ee;
   --color-muted: #c9c5bd;
 }
@@ -24,7 +25,7 @@ body {
   color: var(--color-text);
   display: flex;
   justify-content: center;
-  font-family: "Montserrat", Arial, Helvetica, sans-serif;
+  font-family: "DM Sans", Arial, Helvetica, sans-serif;
   line-height: 1.6;
 }
 
@@ -305,7 +306,9 @@ select {
   border: 2px solid var(--color-gold);
   padding: 17px;
   background: linear-gradient(145deg, #2a2113, #19140d);
-  box-shadow: inset 3px 0 0 var(--color-pink-red), 0 0 0 1px rgba(227, 165, 53, 0.2);
+  box-shadow:
+    inset 0 0 0 1px rgba(227, 165, 53, 0.18),
+    0 0 0 1px rgba(227, 165, 53, 0.2);
 }
 
 .product-card.selected h3 {
@@ -320,7 +323,6 @@ select {
   transform: translateY(-2px);
   border-color: var(--color-gold-light);
   box-shadow:
-    inset 3px 0 0 var(--color-pink-red),
     0 0 24px 2px rgba(227, 165, 53, 0.32),
     0 8px 24px rgba(0, 0, 0, 0.24);
 }
@@ -402,6 +404,38 @@ select {
 
 .remove-product:focus-visible {
   outline-color: var(--color-pink-red);
+}
+
+.reset-consultation-btn {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 20px;
+  padding: 12px 18px;
+  border: 1px solid rgba(227, 165, 53, 0.7);
+  border-radius: 3px;
+  background: #15130f;
+  color: var(--color-gold-light);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
+}
+
+.reset-consultation-btn:hover:not(:disabled) {
+  border-color: var(--color-gold-light);
+  background: #211b11;
+  box-shadow: 0 5px 18px rgba(227, 165, 53, 0.14);
+  transform: translateY(-1px);
+}
+
+.reset-consultation-btn:focus-visible {
+  outline: 2px solid var(--color-gold-light);
+  outline-offset: 4px;
 }
 
 .generate-btn {
@@ -562,12 +596,13 @@ select {
   font-weight: 700;
 }
 
-.routine-step-note {
-  margin-top: 9px;
-  padding-left: 10px;
-  border-left: 2px solid #c78d25;
+.routine-shared-note {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(176, 127, 39, 0.35);
   color: #625a50;
   font-size: 12px;
+  font-style: italic;
 }
 
 .chat-message {
@@ -626,19 +661,23 @@ select {
 .chat-form button {
   width: 48px;
   height: 48px;
-  border: 1px solid var(--color-pink-red);
+  border: 1px solid var(--color-gold);
   border-radius: 3px;
-  background: var(--color-pink-red);
+  background: var(--color-berry);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 180ms ease, transform 180ms ease;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
 }
 
 .chat-form button:hover {
-  background: #d90033;
+  border-color: var(--color-gold-light);
+  background: #b83b5a;
   transform: translateY(-1px);
 }
 
@@ -673,7 +712,7 @@ select {
   border: 1px solid var(--color-gold);
   background: #faf6f0;
   color: #24201e;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: inherit;
   line-height: 1.7;
 }
 
