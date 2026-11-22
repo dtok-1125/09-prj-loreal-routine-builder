@@ -1010,3 +1010,33 @@ select {
 #productSearch::placeholder {
   color: #aaa39a;
 }
+
+/* Right-to-left layout support */
+[dir="rtl"] .search-section,
+[dir="rtl"] .selected-products,
+[dir="rtl"] .chat-section,
+[dir="rtl"] .product-card,
+[dir="rtl"] .product-modal {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] input,
+[dir="rtl"] select,
+[dir="rtl"] textarea {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Keep L'Oréal branding centered in both directions */
+[dir="rtl"] .site-header {
+  direction: ltr;
+  width: 100%;
+}
+
+[dir="rtl"] .header-inner {
+  direction: ltr;
+  margin-inline: auto;
+  justify-content: center;
+  text-align: center;
+}
