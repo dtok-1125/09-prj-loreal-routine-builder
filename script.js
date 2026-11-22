@@ -92,6 +92,7 @@ async function loadProducts() {
   allProducts = data.products;
   restoreSelectedProducts();
   updateSelectedProducts();
+  filterProducts();
   return allProducts;
 }
 
@@ -201,6 +202,15 @@ modalProductAction.addEventListener("click", () => {
 
 /* Create HTML for displaying interactive product cards */
 function displayProducts(products) {
+  if (products.length === 0) {
+    productsContainer.innerHTML = `
+      <div class="placeholder-message">
+        No matching products found
+      </div>
+    `;
+    return;
+  }
+
   productsContainer.innerHTML = products
     .map((product) => {
       const isSelected = selectedProductIds.includes(product.id);
@@ -220,6 +230,20 @@ function displayProducts(products) {
       `;
     })
     .join("");
+
+  productsContainer.querySelectorAll(".product-card img").forEach((image) => {
+    image.addEventListener(
+      "error",
+      () => {
+        const fallback = document.createElement("div");
+        fallback.className = "product-image-fallback";
+        fallback.textContent = "PRODUCT";
+        fallback.setAttribute("aria-hidden", "true");
+        image.replaceWith(fallback);
+      },
+      { once: true }
+    );
+  });
 }
 /* Add or remove a product from our selection */
 function toggleProduct(productId) {
@@ -310,19 +334,37 @@ function updateSelectedProducts() {
   });
 }
 
-// Filter products by category AND search keyword
+// Remove accents and separators so visually equivalent searches match.
+function normalizeSearchText(text) {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+}
+
+// Filter products by category and search keyword
 function filterProducts() {
   const selectedCategory = categoryFilter.value;
-  const searchTerm = productSearch.value.trim().toLowerCase();
+  const searchTerm = normalizeSearchText(productSearch.value);
+
+  if (!selectedCategory && !searchTerm) {
+    productsContainer.innerHTML = `
+      <div class="placeholder-message">
+        Select a category to view products
+      </div>
+    `;
+    return;
+  }
 
   const filteredProducts = allProducts.filter((product) => {
     const matchesCategory =
-      product.category === selectedCategory;
+      !selectedCategory || product.category === selectedCategory;
 
     const matchesSearch =
-      product.name.toLowerCase().includes(searchTerm) ||
-      product.brand.toLowerCase().includes(searchTerm) ||
-      product.description.toLowerCase().includes(searchTerm);
+      normalizeSearchText(
+        `${product.name} ${product.brand} ${product.description}`
+      ).includes(searchTerm);
 
     return matchesCategory && matchesSearch;
   });
