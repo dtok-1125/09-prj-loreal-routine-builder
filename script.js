@@ -584,6 +584,79 @@ function appendChatMessage(role, text) {
   return message;
 }
 
+function getQuickReplySuggestions(userMessage, assistantReply) {
+  const topic = `${userMessage} ${assistantReply}`.toLowerCase();
+  const isHydrationTopic =
+    /hydration|hydrate|dry[\s-]+skin|dehydrat|moisture|moisturiz|moisturis/.test(
+      topic
+    );
+  const isProductTopic =
+    /product|serum|ingredient|formula|apply|application/.test(topic);
+  const isHairOrMakeupTopic = /hair|makeup|fragrance|color/.test(topic);
+
+  const suggestions = [
+    {
+      label: isHairOrMakeupTopic
+        ? "Build my routine"
+        : "Build my morning routine",
+      action: "generate-routine",
+    },
+  ];
+
+  if (isHydrationTopic) {
+    suggestions.push({ label: "More hydration tips", action: "chat" });
+  } else if (isProductTopic) {
+    suggestions.push({ label: "How should I use this product?", action: "chat" });
+  } else {
+    suggestions.push({ label: "How can I layer these products?", action: "chat" });
+  }
+
+  suggestions.push({
+    label: /serum/.test(topic)
+      ? "Tell me about the serum"
+      : "Tell me about a selected product",
+    action: "chat",
+  });
+
+  return suggestions.slice(0, 3);
+}
+
+function appendQuickReplySuggestions(userMessage, assistantReply, response) {
+  const suggestions = document.createElement("div");
+  suggestions.className = "quick-replies";
+  suggestions.setAttribute("role", "group");
+  suggestions.setAttribute("aria-label", "Suggested follow-up questions");
+
+  getQuickReplySuggestions(userMessage, assistantReply).forEach((suggestion) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "quick-reply";
+    button.textContent = suggestion.label;
+    button.setAttribute(
+      "aria-label",
+      suggestion.action === "generate-routine"
+        ? `${suggestion.label} using Generate Routine`
+        : `Ask the advisor: ${suggestion.label}`
+    );
+    button.addEventListener("click", () => {
+      if (requestInProgress) return;
+
+      suggestions.remove();
+      if (suggestion.action === "generate-routine") {
+        generateRoutine();
+        return;
+      }
+
+      userInput.value = suggestion.label;
+      submitChatMessage(suggestion.label);
+    });
+    suggestions.appendChild(button);
+  });
+
+  response.after(suggestions);
+  chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
 function appendRoutineHeader(title, introduction) {
   const heading = document.createElement("h3");
   heading.className = "routine-heading";
@@ -959,12 +1032,11 @@ resetConsultationButton.addEventListener("click", () => {
   updateModalProductAction();
 });
 
-chatForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
+async function submitChatMessage(question) {
   if (requestInProgress) return;
 
-  const question = userInput.value.trim();
   if (!question) return;
+  chatWindow.querySelector(".quick-replies")?.remove();
 
   const selectedProducts = selectedProductIds
     .map((id) => allProducts.find((product) => product.id === id))
@@ -1000,7 +1072,9 @@ chatForm.addEventListener("submit", async (event) => {
       { role: "assistant", content: reply },
     ];
     loadingMessage.remove();
-    appendChatMessage("assistant", reply);
+    const response = appendChatMessage("assistant", reply);
+    response.classList.add("chat-message-enter");
+    appendQuickReplySuggestions(question, reply, response);
     userInput.value = "";
   } catch (error) {
     console.error("AI follow-up failed:", error);
@@ -1012,6 +1086,11 @@ chatForm.addEventListener("submit", async (event) => {
   } finally {
     setRequestInProgress(false);
   }
+}
+
+chatForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  await submitChatMessage(userInput.value.trim());
 });
 
 loadProducts().catch((error) => {
