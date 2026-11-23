@@ -1174,6 +1174,8 @@ select {
   .header-inner {
     width: calc(100% - 28px);
     gap: 12px;
+    padding-top: 16px;
+    transform: translateX(6px);
   }
 
   .logo {
@@ -1192,6 +1194,7 @@ select {
 
   .direction-control {
     right: 14px;
+    top: 16px;
   }
 
   .search-section {
