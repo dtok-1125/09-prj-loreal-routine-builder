@@ -75,7 +75,7 @@ const routinePurposeOrder = {
 /* Show initial placeholder until user selects a category */
 productsContainer.innerHTML = `
   <div class="placeholder-message">
-    Select a category to view products
+    Choose a category or search for a product to get started.
   </div>
 `;
 
@@ -351,7 +351,7 @@ function filterProducts() {
   if (!selectedCategory && !searchTerm) {
     productsContainer.innerHTML = `
       <div class="placeholder-message">
-        Select a category to view products
+        Choose a category or search for a product to get started.
       </div>
     `;
     return;
